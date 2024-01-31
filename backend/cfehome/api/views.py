@@ -18,7 +18,9 @@ def api_home(request, *args, **kwargs):
         data = json.loads(body) #takes a string of data and converts it into a python dictionary
     
     except:
-        
+
+        pass
+
     print(data)
     print(data.keys())
     #return JsonResponse({"message" : "Hi there, this is your Django API Response"})
