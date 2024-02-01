@@ -1,33 +1,31 @@
 import json
+from django.forms.models import model_to_dict
+from products.models import Products
 from django.shortcuts import render
 from django.http import JsonResponse,HttpResponse
 
 # Create your views here.
 def api_home(request, *args, **kwargs):
 
-    #request -> HttpRequest -> Django
-    #print(dir(request))
-    #request.body
+    model_data = Products.objects.all().order_by("?").first()
+    data = {}
 
-    print(request.GET)
+    if model_data:
 
-    body = request.body # byte string of JSON data
+        data = model_to_dict(model_data, fields= ['id','title','price'])
+        #convertiing dict str to json str
+        #json_data_str = json.dumps(data)
+        #data['id'] = model_data.id
+        #data['title'] = model_data.title
+        #data['context'] = model_data.content
+        #data['price'] = model_data.price
 
-    #converting the data to a python dictionary
-    try:
-        data = json.loads(body) #takes a string of data and converts it into a python dictionary
-    
-    except:
+        #model instance (model_data)
+        #turn a python dict
+        #return JSON to client
+    #return HttpResponse(data, headers = {"content_type": "application/json"})
+    #return HttpResponse(json_data_str, headers = {"content-type" : "application/json"})    
 
-        pass
-
-    print(data)
-    print(data.keys())
-    #return JsonResponse({"message" : "Hi there, this is your Django API Response"})
-    #creating a header
-    #data['headers'] = request.headers
-    print(request.headers)
-    data['params'] = dict(request.GET)
-    data['headers'] = dict(request.headers)
-    data['content_type'] = request.content_type
     return JsonResponse(data)
+     
+
